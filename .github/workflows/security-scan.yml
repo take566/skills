@@ -20,143 +20,142 @@ jobs:
     name: CodeQL Security Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     strategy:
       fail-fast: false
       matrix:
         language: [ 'python' ]
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        queries: +security-and-quality
-    
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
 
   bandit-scan:
     name: Bandit Python Security Scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        cache: 'pip'
-    
-    - name: Install Bandit
-      run: |
-        python -m pip install --upgrade pip
-        pip install bandit[toml]
-    
-    - name: Run Bandit Security Scan
-      run: |
-        bandit -r . -f json -o bandit-report.json || true
-        bandit -r . -f txt
-      continue-on-error: false
-    
-    - name: Upload Bandit Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: bandit-security-report
-        path: bandit-report.json
-        retention-days: 30
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Bandit
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit[toml]
+
+      - name: Run Bandit Security Scan
+        run: |
+          bandit -r . -f json -o bandit-report.json || true
+          bandit -r . -f txt
+        continue-on-error: false
+
+      - name: Upload Bandit Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-security-report
+          path: bandit-report.json
+          retention-days: 30
 
   dependency-scan:
     name: Dependency Vulnerability Scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    
-    - name: Install Safety
-      run: |
-        python -m pip install --upgrade pip
-        pip install safety
-    
-    - name: Check for known vulnerabilities
-      run: |
-        # Create a requirements file from installed packages
-        pip freeze > requirements-check.txt
-        # Run safety check
-        safety check --file requirements-check.txt --output json > safety-report.json || true
-        safety check --file requirements-check.txt || true
-      continue-on-error: true
-    
-    - name: Upload Safety Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: safety-vulnerability-report
-        path: safety-report.json
-        retention-days: 30
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Safety
+        run: |
+          python -m pip install --upgrade pip
+          pip install safety
+
+      - name: Check for known vulnerabilities
+        run: |
+          pip freeze > requirements-check.txt
+          safety check --file requirements-check.txt \
+            --output json > safety-report.json || true
+          safety check --file requirements-check.txt || true
+        continue-on-error: true
+
+      - name: Upload Safety Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: safety-vulnerability-report
+          path: safety-report.json
+          retention-days: 30
 
   secret-scan:
     name: Secret Detection Scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Run Gitleaks
-      uses: gitleaks/gitleaks-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   yaml-lint:
     name: YAML Security Lint
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    
-    - name: Install yamllint
-      run: |
-        python -m pip install --upgrade pip
-        pip install yamllint
-    
-    - name: Lint YAML files
-      run: |
-        # Find and lint all YAML files
-        find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./.git/*" | xargs yamllint -d relaxed || true
-      continue-on-error: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install yamllint
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint
+
+      - name: Lint YAML files
+        run: |
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) \
+            -not -path "./.git/*" | xargs yamllint -d relaxed || true
+        continue-on-error: true
