@@ -115,7 +115,7 @@ def main():
         print(f"エラー: ファイルが見つかりません: {filepath}")
         sys.exit(1)
     
-    with open(filepath) as f:
+    with open(filepath, encoding='utf-8') as f:
         config = yaml.safe_load(f)
     
     # ファイルタイプ判定
