@@ -6,6 +6,7 @@ This repository combines skills from [awesome-claude-skills](https://github.com/
 
 ## Contents
 
+- [Repository Structure](#repository-structure)
 - [What Are Claude Skills?](#what-are-claude-skills)
 - [Skills](#skills)
   - [Document Processing](#document-processing)
@@ -22,6 +23,12 @@ This repository combines skills from [awesome-claude-skills](https://github.com/
 - [Contributing](#contributing)
 - [Resources](#resources)
 - [License](#license)
+
+## Repository Structure
+
+- **ルート直下の各フォルダ** — 利用可能なスキル（本ドキュメントの [Skills](#skills) で一覧）。
+- [reference/](./reference/) — 外部リポジトリのフォーク・参照用（例: [anthropics/skills](https://github.com/anthropics/skills) のフォーク）。
+- [_archive/](./_archive/) — 過去の出力や一時コピーの保管。通常利用には不要。
 
 ## What Are Claude Skills?
 
