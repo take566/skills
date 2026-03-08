@@ -8,7 +8,7 @@ import zipfile
 
 import lxml.etree
 
-from .base import BaseSchemaValidator
+from .base import BaseSchemaValidator, _safe_xml_parse
 
 
 class DOCXSchemaValidator(BaseSchemaValidator):
@@ -81,7 +81,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 continue
 
             try:
-                root = lxml.etree.parse(str(xml_file)).getroot()
+                root = _safe_xml_parse(str(xml_file)).getroot()
 
                 # Find all w:t elements
                 for elem in root.iter(f"{{{self.WORD_2006_NAMESPACE}}}t"):
@@ -134,7 +134,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 continue
 
             try:
-                root = lxml.etree.parse(str(xml_file)).getroot()
+                root = _safe_xml_parse(str(xml_file)).getroot()
 
                 # Find all w:t elements that are descendants of w:del elements
                 namespaces = {"w": self.WORD_2006_NAMESPACE}
@@ -180,7 +180,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 continue
 
             try:
-                root = lxml.etree.parse(str(xml_file)).getroot()
+                root = _safe_xml_parse(str(xml_file)).getroot()
                 # Count all w:p elements
                 paragraphs = root.findall(f".//{{{self.WORD_2006_NAMESPACE}}}p")
                 count = len(paragraphs)
@@ -202,7 +202,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
                 # Parse document.xml
                 doc_xml_path = temp_dir + "/word/document.xml"
-                root = lxml.etree.parse(doc_xml_path).getroot()
+                root = _safe_xml_parse(doc_xml_path).getroot()
 
                 # Count all w:p elements
                 paragraphs = root.findall(f".//{{{self.WORD_2006_NAMESPACE}}}p")
@@ -225,7 +225,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 continue
 
             try:
-                root = lxml.etree.parse(str(xml_file)).getroot()
+                root = _safe_xml_parse(str(xml_file)).getroot()
                 namespaces = {"w": self.WORD_2006_NAMESPACE}
 
                 # Find w:delText in w:ins that are NOT within w:del

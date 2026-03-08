@@ -16,7 +16,7 @@ def check_yt_dlp():
         subprocess.run(["yt-dlp", "--version"], capture_output=True, check=True)
     except (subprocess.CalledProcessError, FileNotFoundError):
         print("yt-dlp not found. Installing...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "--break-system-packages", "yt-dlp"], check=True)
+        subprocess.run([sys.executable, "-m", "pip", "install", "yt-dlp"], check=True)
 
 
 def get_video_info(url):
