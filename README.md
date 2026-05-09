@@ -139,23 +139,47 @@ On Windows the default install method is `copy` because symlinks require
 Developer Mode or administrator rights. After install, start Claude Code and
 the skill loads automatically when relevant.
 
-### Using Skills via API
+### Publishing Skills to the Anthropic Skills API
 
-Use the Claude Skills API to programmatically load and manage skills:
+This repository ships a publisher script that uploads skills via
+`POST /v1/skills` (beta `skills-2025-10-02`). It uses the official Anthropic
+Python SDK and tracks already-published skill IDs locally to avoid duplicate
+creates.
 
-```python
-import anthropic
+```bash
+# Install the SDK
+pip install -r scripts/requirements.txt
 
-client = anthropic.Anthropic(api_key="your-api-key")
+# Set your key
+export ANTHROPIC_API_KEY=sk-ant-...
 
-response = client.messages.create(
-    model="claude-3-5-sonnet-20241022",
-    skills=["skill-id-here"],
-    messages=[{"role": "user", "content": "Your prompt"}]
-)
+# Preview what will be sent (no API calls)
+python scripts/publish_api.py --skill code-quality --dry-run
+python scripts/publish_api.py --all --dry-run
+
+# Publish a single skill (writes id to data/api_skill_ids.json)
+python scripts/publish_api.py --skill code-quality
+
+# Publish everything
+python scripts/publish_api.py --all
+
+# Re-create even if already in the local state file
+python scripts/publish_api.py --skill code-quality --force-recreate
+
+# Prefix every display_title (handy for staging environments)
+python scripts/publish_api.py --all --display-title-prefix "[staging] "
 ```
 
-See the [Skills API documentation](https://docs.claude.com/en/api/skills-guide) for details.
+A GitHub Actions workflow at `.github/workflows/publish-skills.yml` exposes the
+same flow under `workflow_dispatch` (manual trigger). The workflow needs an
+`ANTHROPIC_API_KEY` repository secret. Inputs:
+
+- `skill_filter` — `--all` or `--skill <name>` etc.
+- `dry_run` — defaults to `true` for safety
+- `force_recreate` — defaults to `false`
+
+Once published, you can reference the returned skill IDs from the Anthropic
+API. See the [Skills API documentation](https://docs.claude.com/en/api/skills-guide) for usage details.
 
 ## Creating Skills
 
