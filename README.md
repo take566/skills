@@ -112,23 +112,32 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 ### Using Skills in Claude Code
 
-1. Place the skill in `~/.config/claude-code/skills/`:
-   ```bash
-   mkdir -p ~/.config/claude-code/skills/
-   cp -r skill-name ~/.config/claude-code/skills/
-   ```
+Skills are loaded from `~/.claude/skills/`. Use the bundled installer to deploy
+every (or a selected) skill from this repository:
 
-2. Verify skill metadata:
-   ```bash
-   head ~/.config/claude-code/skills/skill-name/SKILL.md
-   ```
+```bash
+# Show what would happen (no writes)
+python scripts/install_local.py --all --dry-run
 
-3. Start Claude Code:
-   ```bash
-   claude
-   ```
+# Install everything to ~/.claude/skills/
+python scripts/install_local.py --all
 
-4. The skill loads automatically and activates when relevant.
+# Install a specific skill (repeatable flag)
+python scripts/install_local.py --skill code-quality --skill cicd
+
+# Overwrite an existing target
+python scripts/install_local.py --skill code-quality --force
+
+# Custom target directory (parents created automatically)
+python scripts/install_local.py --all --target /path/to/skills
+
+# Force symlinks (default on POSIX; Windows defaults to copy)
+python scripts/install_local.py --all --method link
+```
+
+On Windows the default install method is `copy` because symlinks require
+Developer Mode or administrator rights. After install, start Claude Code and
+the skill loads automatically when relevant.
 
 ### Using Skills via API
 
