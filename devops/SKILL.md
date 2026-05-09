@@ -1,5 +1,5 @@
 ---
-name: devops-infrastructure
+name: devops
 description: クラウドインフラ設計・IaC実装・監視設定・コンテナオーケストレーション。AWS、GCP、Azureのリソース構築、Terraform/Pulumi、Kubernetes、Docker、Prometheus/Grafana監視。「インフラ」「クラウド」「Terraform」「Kubernetes」「監視」「Docker」に関する質問で使用。
 ---
 

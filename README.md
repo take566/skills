@@ -18,6 +18,7 @@ This repository combines skills from [awesome-claude-skills](https://github.com/
   - [Productivity & Organization](#productivity--organization)
   - [DevOps & Infrastructure](#devops--infrastructure)
   - [LLM Operations](#llm-operations)
+  - [Bundled Skill Suites](#bundled-skill-suites)
 - [Getting Started](#getting-started)
 - [Creating Skills](#creating-skills)
 - [Contributing](#contributing)
@@ -49,14 +50,17 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 - [artifacts-builder](./artifacts-builder/) - Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui).
 - [changelog-generator](./changelog-generator/) - Automatically creates user-facing changelogs from git commits by analyzing history and transforming technical commits into customer-friendly release notes.
 - [code-quality](./code-quality/) - コードレビュー、コミットメッセージ生成、リファクタリング提案、テスト作成支援。静的解析、コーディング規約チェック、セキュリティスキャン。
-- [git-branch-cleanup](./git-branch-cleanup/) - ローカルGitブランチを分析し、安全にクリーンアップします。マージステータス、古さ、リモート追跡でブランチを分類し、インタラクティブな選択と安全ガードを提供します。
+- [git-branch-cleanup](./git-branch-cleanup/) - ローカルGitブランチを分析し、安全にクリーンアップ。マージ状態・古さ・リモート追跡でブランチを分類し、インタラクティブな選択と安全ガードを提供。
 - [mcp-builder](./mcp-builder/) - Guides creation of high-quality MCP (Model Context Protocol) servers for integrating external APIs and services with LLMs using Python or TypeScript.
 - [skill-creator](./skill-creator/) - Provides guidance for creating effective Claude Skills that extend capabilities with specialized knowledge, workflows, and tool integrations.
+- [skill-share](./skill-share/) - Creates new Claude Skills with proper structure and metadata, then shares them on Slack via Rube for team collaboration and skill discovery.
+- [template-skill](./template-skill/) - Minimal template for bootstrapping new Claude Skills with the expected structure and frontmatter.
 - [webapp-testing](./webapp-testing/) - Tests local web applications using Playwright for verifying frontend functionality, debugging UI behavior, and capturing screenshots.
 
 ### Data & Analysis
 
 - [data-analysis](./data-analysis/) - データ分析、可視化、統計処理。Excel、Pandas、SQL、統計解析、データ可視化の支援。
+- [developer-growth-analysis](./developer-growth-analysis/) - Analyzes recent Claude Code chat history to identify coding patterns, development gaps, and growth areas, then sends a personalized growth report to Slack DMs.
 
 ### Business & Marketing
 
@@ -94,11 +98,9 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 - [llmops](./llmops/) - LLM運用、評価、プロンプトエンジニアリング、RAG（Retrieval-Augmented Generation）の実装と最適化。
 
-### Other
+### Bundled Skill Suites
 
-- [developer-growth-analysis](./developer-growth-analysis/) - Analyzes developer growth and productivity metrics.
-- [skill-share](./skill-share/) - Share and discover Claude Skills.
-- [template-skill](./template-skill/) - Template for creating new Claude Skills.
+- [gws-cli-skills](./gws-cli-skills/) - Google Workspace 向け CLI 連携スキル群を内包する独立 Rust プロジェクト（30+ サブスキル: Gmail/Calendar/Drive/Docs/Sheets/Slides/Chat/Meet/Forms/Tasks/Keep/Classroom/People/ModelArmor/各種ワークフロー）。`skills/` 配下に各サブスキルが格納されている。
 
 ## Getting Started
 

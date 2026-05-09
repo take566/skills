@@ -1,5 +1,5 @@
 ---
-name: cicd-pipeline
+name: cicd
 description: CI/CDパイプラインの設計・実装・トラブルシューティング。GitHub Actions、GitLab CI、CircleCI、Jenkinsの設定ファイル作成、ビルド最適化、デプロイ戦略（Blue-Green、Canary、Rolling）の実装。「パイプライン」「CI/CD」「デプロイ」「ビルド」「自動化」に関する質問で使用。
 ---
 
