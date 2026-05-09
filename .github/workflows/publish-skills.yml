@@ -1,0 +1,51 @@
+name: Publish Skills to Anthropic API
+
+on:
+  workflow_dispatch:
+    inputs:
+      skill_filter:
+        description: 'Skill selector passed to publish_api.py (e.g. "--all" or "--skill code-quality")'
+        required: true
+        default: '--all'
+      dry_run:
+        description: 'Dry-run only (no API calls)'
+        required: true
+        type: boolean
+        default: true
+      force_recreate:
+        description: 'Pass --force-recreate (re-create even if state has an existing ID; CI state is ephemeral so usually unnecessary)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish via Skills API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run publish_api.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -e
+          ARGS="${{ github.event.inputs.skill_filter }}"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.force_recreate }}" = "true" ]; then
+            ARGS="$ARGS --force-recreate"
+          fi
+          echo "Running: python scripts/publish_api.py $ARGS"
+          python scripts/publish_api.py $ARGS
