@@ -59,15 +59,21 @@ def save_state(path: Path, state: dict) -> None:
 
 
 def collect_files(skill_dir: Path) -> list[tuple[str, bytes, str]]:
-    """Return [(relative_path, content, mime_type), ...] for a skill bundle."""
+    """Return [(relative_path, content, mime_type), ...] for a skill bundle.
+
+    Each path is prefixed with the skill directory name so the API receives a
+    bundle under a single top-level folder (with SKILL.md at its root), e.g.
+    ``code-quality/SKILL.md`` and ``code-quality/reference/commit.md``.
+    """
     bundle = []
     skill_dir = skill_dir.resolve()
+    top = skill_dir.name
     for f in skill_dir.rglob("*"):
         if not f.is_file():
             continue
         if any(part in EXCLUDE_PATH_PARTS for part in f.relative_to(skill_dir).parts):
             continue
-        rel = f.relative_to(skill_dir).as_posix()
+        rel = f"{top}/{f.relative_to(skill_dir).as_posix()}"
         mime, _ = mimetypes.guess_type(rel)
         if mime is None:
             mime = "application/octet-stream"
@@ -95,7 +101,7 @@ def publish_one(client, skill, prefix: str, dry_run: bool):
     skill_dir = Path(skill["path"])
     bundle = collect_files(skill_dir)
 
-    has_skill_md = any(rel == "SKILL.md" for rel, _, _ in bundle)
+    has_skill_md = any(rel == f"{name}/SKILL.md" for rel, _, _ in bundle)
     if not has_skill_md:
         return "failed", f"{name}: SKILL.md not found at root of {skill_dir}", None
 
