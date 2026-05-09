@@ -58,27 +58,83 @@ def save_state(path: Path, state: dict) -> None:
     tmp.rename(path)
 
 
-def collect_files(skill_dir: Path) -> list[tuple[str, bytes, str]]:
+def collect_files(
+    skill_dir: Path,
+    top_folder: str,
+    exclude_top_dirs: set[str] | None = None,
+) -> list[tuple[str, bytes, str]]:
     """Return [(relative_path, content, mime_type), ...] for a skill bundle.
 
-    Each path is prefixed with the skill directory name so the API receives a
-    bundle under a single top-level folder (with SKILL.md at its root), e.g.
+    Each path is prefixed with ``top_folder`` so the API receives a bundle
+    under a single top-level folder (with SKILL.md at its root), e.g.
     ``code-quality/SKILL.md`` and ``code-quality/reference/commit.md``.
+
+    ``exclude_top_dirs`` lets a parent skill exclude sub-skill directories
+    (each containing its own SKILL.md, which the API forbids in one bundle).
     """
     bundle = []
     skill_dir = skill_dir.resolve()
-    top = skill_dir.name
+    exclude_top_dirs = exclude_top_dirs or set()
     for f in skill_dir.rglob("*"):
         if not f.is_file():
             continue
-        if any(part in EXCLUDE_PATH_PARTS for part in f.relative_to(skill_dir).parts):
+        rel_parts = f.relative_to(skill_dir).parts
+        if any(part in EXCLUDE_PATH_PARTS for part in rel_parts):
             continue
-        rel = f"{top}/{f.relative_to(skill_dir).as_posix()}"
+        if rel_parts and rel_parts[0] in exclude_top_dirs:
+            continue
+        rel = f"{top_folder}/{f.relative_to(skill_dir).as_posix()}"
         mime, _ = mimetypes.guess_type(rel)
         if mime is None:
             mime = "application/octet-stream"
         bundle.append((rel, f.read_bytes(), mime))
     return bundle
+
+
+def expand_targets(skills: list[dict]) -> list[dict]:
+    """Expand each skill into one or more publish targets.
+
+    A skill with sub-skills (e.g. document-processing/{docx,pdf,pptx,xlsx})
+    yields one target per unit: the parent (sub directories excluded) plus
+    each sub-skill as its own target. The synthesized name for a sub-skill
+    is ``<parent>-<sub>`` (e.g. ``document-processing-docx``) so it gets a
+    unique state-file key and display title.
+    """
+    targets = []
+    for skill in skills:
+        sub_skills = skill.get("sub_skills") or []
+        if sub_skills:
+            sub_dir_names = {s["directory"] for s in sub_skills}
+            targets.append({
+                "name": skill["directory"],
+                "skill_dir": Path(skill["path"]),
+                "frontmatter": skill["frontmatter"],
+                "top_folder": skill["directory"],
+                "exclude_top_dirs": sub_dir_names,
+            })
+            for sub in sub_skills:
+                synthesized = f"{skill['directory']}-{sub['directory']}"
+                # The API requires top_folder == frontmatter.name. Sub-skill
+                # frontmatter names are short (e.g. "docx") so we use that
+                # for the upload folder, while keeping the synthesized name
+                # as the state-file key to namespace it locally.
+                sub_fm_name = sub["frontmatter"].get("name") or sub["directory"]
+                targets.append({
+                    "name": synthesized,
+                    "skill_dir": Path(sub["path"]),
+                    "frontmatter": sub["frontmatter"],
+                    "top_folder": sub_fm_name,
+                    "exclude_top_dirs": set(),
+                })
+        else:
+            targets.append({
+                "name": skill["directory"],
+                "skill_dir": Path(skill["path"]),
+                "frontmatter": skill["frontmatter"],
+                "top_folder": skill["directory"],
+                "exclude_top_dirs": set(),
+            })
+    return targets
 
 
 def filter_skills(all_skills, names):
@@ -96,17 +152,21 @@ def filter_skills(all_skills, names):
     return selected
 
 
-def publish_one(client, skill, prefix: str, dry_run: bool):
-    name = skill["directory"]
-    skill_dir = Path(skill["path"])
-    bundle = collect_files(skill_dir)
+def publish_one(client, target: dict, prefix: str, dry_run: bool):
+    name = target["name"]
+    bundle = collect_files(
+        target["skill_dir"],
+        top_folder=target["top_folder"],
+        exclude_top_dirs=target["exclude_top_dirs"],
+    )
 
-    has_skill_md = any(rel == f"{name}/SKILL.md" for rel, _, _ in bundle)
+    expected_root = f"{target['top_folder']}/SKILL.md"
+    has_skill_md = any(rel == expected_root for rel, _, _ in bundle)
     if not has_skill_md:
-        return "failed", f"{name}: SKILL.md not found at root of {skill_dir}", None
+        return "failed", f"{name}: SKILL.md not found at {expected_root}", None
 
-    fm = skill["frontmatter"]
-    raw_title = fm.get("display-title") or fm.get("name") or name
+    fm = target["frontmatter"]
+    raw_title = fm.get("display-title") or name
     display_title = f"{prefix}{raw_title}"
 
     if dry_run:
@@ -155,11 +215,12 @@ def main() -> int:
     if not selected:
         sys.exit("ERROR: no skills selected")
 
+    targets = expand_targets(selected)
     state = load_state(args.state_file)
 
     print(f"Source repo : {REPO_ROOT}")
     print(f"State file  : {args.state_file}")
-    print(f"Skills      : {len(selected)}")
+    print(f"Skills      : {len(selected)} (expanded to {len(targets)} bundles)")
     print(f"Mode        : {'DRY-RUN' if args.dry_run else 'EXECUTE'}")
     print(f"Beta        : {SKILLS_BETA}")
     print()
@@ -173,15 +234,15 @@ def main() -> int:
         client = Anthropic()
 
     counts = {"created": 0, "skipped": 0, "planned": 0, "failed": 0}
-    for skill in selected:
-        name = skill["directory"]
+    for target in targets:
+        name = target["name"]
         if name in state and not args.force_recreate and not args.dry_run:
             counts["skipped"] += 1
             print(f"  [SKIP] {name}: already published (id={state[name]}) — use --force-recreate to override")
             continue
 
         try:
-            status, message, new_id = publish_one(client, skill, args.display_title_prefix, args.dry_run)
+            status, message, new_id = publish_one(client, target, args.display_title_prefix, args.dry_run)
         except Exception as exc:  # noqa: BLE001 - surface any SDK error
             status = "failed"
             message = f"{name}: {exc.__class__.__name__}: {exc}"
