@@ -1,0 +1,27 @@
+name: Lint Skills
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Validate SKILL.md
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate frontmatter and structure
+        run: python scripts/skill_config.py validate
+
+      - name: Verify directory name matches frontmatter name
+        run: python scripts/lint_dir_name_match.py
