@@ -47,14 +47,20 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 ### Development & Code Tools
 
+- [app-docs](./app-docs/) - Generates complete user documentation for a web app by browsing it via browser automation, screenshotting every screen, and producing a structured user guide with step-by-step instructions and diagrams. (Vendored from [jezweb/claude-skills](https://github.com/jezweb/claude-skills), MIT.)
 - [artifacts-builder](./artifacts-builder/) - Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui).
 - [changelog-generator](./changelog-generator/) - Automatically creates user-facing changelogs from git commits by analyzing history and transforming technical commits into customer-friendly release notes.
 - [code-quality](./code-quality/) - コードレビュー、コミットメッセージ生成、リファクタリング提案、テスト作成支援。静的解析、コーディング規約チェック、セキュリティスキャン。
+- [frontend-design](./frontend-design/) - Creates distinctive, production-grade frontend interfaces with high design quality, avoiding generic "AI slop" aesthetics. (Vendored from [anthropics/skills](https://github.com/anthropics/skills), Apache-2.0.)
 - [git-branch-cleanup](./git-branch-cleanup/) - ローカルGitブランチを分析し、安全にクリーンアップ。マージ状態・古さ・リモート追跡でブランチを分類し、インタラクティブな選択と安全ガードを提供。
 - [mcp-builder](./mcp-builder/) - Guides creation of high-quality MCP (Model Context Protocol) servers for integrating external APIs and services with LLMs using Python or TypeScript.
+- [performance-profiler](./performance-profiler/) - Systematic performance profiling for Node.js, Python, and Go: finds CPU/memory/I/O bottlenecks, generates flamegraphs, analyzes bundle sizes, and runs load tests, always measuring before and after. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [skill-creator](./skill-creator/) - Provides guidance for creating effective Claude Skills that extend capabilities with specialized knowledge, workflows, and tool integrations.
+- [skill-security-auditor](./skill-security-auditor/) - Security audit and vulnerability scanner for AI agent skills before installation; scans skill directories or repos for dangerous patterns (os.system, eval, network exfiltration). (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [skill-share](./skill-share/) - Creates new Claude Skills with proper structure and metadata, then shares them on Slack via Rube for team collaboration and skill discovery.
+- [tech-debt-tracker](./tech-debt-tracker/) - Scans codebases for technical debt, scores severity, tracks trends, and generates prioritized remediation plans for cleanup sprints and legacy modernization. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [template-skill](./template-skill/) - Minimal template for bootstrapping new Claude Skills with the expected structure and frontmatter.
+- [using-git-worktrees](./using-git-worktrees/) - Sets up an isolated workspace for feature work via native tools or a git worktree fallback, before executing implementation plans. (Vendored from [obra/superpowers](https://github.com/obra/superpowers), MIT.)
 - [webapp-testing](./webapp-testing/) - Tests local web applications using Playwright for verifying frontend functionality, debugging UI behavior, and capturing screenshots.
 
 ### Data & Analysis
@@ -73,6 +79,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 ### Communication & Writing
 
 - [content-research-writer](./content-research-writer/) - Assists in writing high-quality content by conducting research, adding citations, improving hooks, and providing section-by-section feedback.
+- [doc-coauthoring](./doc-coauthoring/) - Guides users through a structured documentation co-authoring workflow (context gathering, refinement, reader testing) for docs, proposals, specs, and decision docs. (Vendored from [anthropics/skills](https://github.com/anthropics/skills), Apache-2.0.)
 - [meeting-insights-analyzer](./meeting-insights-analyzer/) - Analyzes meeting transcripts to uncover behavioral patterns including conflict avoidance, speaking ratios, filler words, and leadership style.
 
 ### Creative & Media
@@ -97,6 +104,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 ### LLM Operations
 
 - [llmops](./llmops/) - LLM運用、評価、プロンプトエンジニアリング、RAG（Retrieval-Augmented Generation）の実装と最適化。
+- [rag-architect](./rag-architect/) - Designs RAG pipelines, optimizes retrieval strategies and chunking, selects embedding models, and evaluates retrieval quality. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 
 ### Bundled Skill Suites
 
