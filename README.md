@@ -55,6 +55,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 - [git-branch-cleanup](./git-branch-cleanup/) - ローカルGitブランチを分析し、安全にクリーンアップ。マージ状態・古さ・リモート追跡でブランチを分類し、インタラクティブな選択と安全ガードを提供。
 - [mcp-builder](./mcp-builder/) - Guides creation of high-quality MCP (Model Context Protocol) servers for integrating external APIs and services with LLMs using Python or TypeScript.
 - [performance-profiler](./performance-profiler/) - Systematic performance profiling for Node.js, Python, and Go: finds CPU/memory/I/O bottlenecks, generates flamegraphs, analyzes bundle sizes, and runs load tests, always measuring before and after. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
+- [release-manager](./release-manager/) - Drives release discipline: generates changelogs, bumps semantic versions, and runs readiness checks before shipping. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [skill-creator](./skill-creator/) - Provides guidance for creating effective Claude Skills that extend capabilities with specialized knowledge, workflows, and tool integrations.
 - [skill-security-auditor](./skill-security-auditor/) - Security audit and vulnerability scanner for AI agent skills before installation; scans skill directories or repos for dangerous patterns (os.system, eval, network exfiltration). (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [skill-share](./skill-share/) - Creates new Claude Skills with proper structure and metadata, then shares them on Slack via Rube for team collaboration and skill discovery.
@@ -92,14 +93,19 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 ### Productivity & Organization
 
+- [capture](./capture/) - Turns a raw brain-dump into structured, actionable items while matching task complexity and preserving the user's voice. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [file-organizer](./file-organizer/) - Intelligently organizes files and folders by understanding context, finding duplicates, and suggesting better organizational structures.
+- [inbox-setup](./inbox-setup/) - Sets up an email triage system (labels, filters, rules) — the setup half of the email pair. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
+- [inbox-triage](./inbox-triage/) - Triages an inbox into prioritized, actionable buckets — the triage half of the email pair. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 - [invoice-organizer](./invoice-organizer/) - Automatically organizes invoices and receipts for tax preparation by reading files, extracting information, and renaming consistently.
 - [raffle-winner-picker](./raffle-winner-picker/) - Randomly selects winners from lists, spreadsheets, or Google Sheets for giveaways and contests with cryptographically secure randomness.
+- [reflect](./reflect/) - Guides a structured reflection/journaling loop for review, synthesis, and better judgment over time. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 
 ### DevOps & Infrastructure
 
 - [cicd](./cicd/) - CI/CDパイプラインの設計・実装・トラブルシューティング。GitHub Actions、GitLab CI、CircleCI、Jenkinsの設定ファイル作成、ビルド最適化、デプロイ戦略（Blue-Green、Canary、Rolling）の実装。
 - [devops](./devops/) - DevOps実践、Kubernetes、モニタリング、本番環境運用、セキュリティ、Terraform。
+- [observability-designer](./observability-designer/) - Designs observability for a system: SLOs/SLIs, alerting rules, dashboards, and trace/logging strategy. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 
 ### LLM Operations
 
@@ -109,6 +115,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 ### Bundled Skill Suites
 
 - [gws-cli-skills](./gws-cli-skills/) - Google Workspace 向け CLI 連携スキル群を内包する独立 Rust プロジェクト（30+ サブスキル: Gmail/Calendar/Drive/Docs/Sheets/Slides/Chat/Meet/Forms/Tasks/Keep/Classroom/People/ModelArmor/各種ワークフロー）。`skills/` 配下に各サブスキルが格納されている。
+- [self-improving-agent](./self-improving-agent/) - Full Claude Code plugin (skills + agents + hooks + commands) that curates Claude Code's auto-memory into durable project knowledge: analyzes `MEMORY.md`, promotes proven patterns into rules, and extracts recurring solutions into skills. Sub-skills: orchestrator + extract/promote/remember/review/status. Install the whole plugin directory. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
 
 ## Getting Started
 
