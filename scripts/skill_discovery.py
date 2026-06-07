@@ -8,7 +8,7 @@ from pathlib import Path
 
 EXCLUDED_DIRS = {
     '_archive', 'reference', 'data', 'gws-cli-skills',
-    'self-improving-agent',
+    'self-improving-agent', 'tapestry',
     'template-skill', '.git', 'scripts', '.cursor',
     'node_modules', '__pycache__',
 }
