@@ -68,6 +68,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 - [data-analysis](./data-analysis/) - データ分析、可視化、統計処理。Excel、Pandas、SQL、統計解析、データ可視化の支援。
 - [developer-growth-analysis](./developer-growth-analysis/) - Analyzes recent Claude Code chat history to identify coding patterns, development gaps, and growth areas, then sends a personalized growth report to Slack DMs.
+- [research-skill](./research-skill/) - Persistent, project-scoped store for deep research on large topics (comparing libraries, evaluating tools, surveying solutions) that survives `/compact`. Complements the built-in `/deep-research` harness. (Vendored from [hec-ovi/research-skill](https://github.com/hec-ovi/research-skill), MIT.)
 
 ### Business & Marketing
 
@@ -79,6 +80,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 ### Communication & Writing
 
+- [connect-apps](./connect-apps/) - Connects Claude to external apps (Gmail, Slack, GitHub, …) to take real actions via the Composio / Rube MCP layer (requires that integration). (Vendored from [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills), Apache-2.0.)
 - [content-research-writer](./content-research-writer/) - Assists in writing high-quality content by conducting research, adding citations, improving hooks, and providing section-by-section feedback.
 - [doc-coauthoring](./doc-coauthoring/) - Guides users through a structured documentation co-authoring workflow (context gathering, refinement, reader testing) for docs, proposals, specs, and decision docs. (Vendored from [anthropics/skills](https://github.com/anthropics/skills), Apache-2.0.)
 - [meeting-insights-analyzer](./meeting-insights-analyzer/) - Analyzes meeting transcripts to uncover behavioral patterns including conflict avoidance, speaking ratios, filler words, and leadership style.
@@ -116,6 +118,7 @@ Claude Skills are customizable workflows that teach Claude how to perform specif
 
 - [gws-cli-skills](./gws-cli-skills/) - Google Workspace 向け CLI 連携スキル群を内包する独立 Rust プロジェクト（30+ サブスキル: Gmail/Calendar/Drive/Docs/Sheets/Slides/Chat/Meet/Forms/Tasks/Keep/Classroom/People/ModelArmor/各種ワークフロー）。`skills/` 配下に各サブスキルが格納されている。
 - [self-improving-agent](./self-improving-agent/) - Full Claude Code plugin (skills + agents + hooks + commands) that curates Claude Code's auto-memory into durable project knowledge: analyzes `MEMORY.md`, promotes proven patterns into rules, and extracts recurring solutions into skills. Sub-skills: orchestrator + extract/promote/remember/review/status. Install the whole plugin directory. (Vendored from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), MIT.)
+- [tapestry](./tapestry/) - Suite of thinking / knowledge-network skills for Claude Code: `article-extractor`, `learn-this`, `scrum-sage`, `session-log`, `ship-learn-next`, `unblock-action`, `youtube-transcript`. Install the whole suite directory. (Vendored from [michalparkola/tapestry-skills-for-claude-code](https://github.com/michalparkola/tapestry-skills-for-claude-code), MIT.)
 
 ## Getting Started
 
