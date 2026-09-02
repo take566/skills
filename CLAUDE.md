@@ -1,20 +1,5 @@
-[byterover-mcp]
+# CLAUDE.md
 
-[byterover-mcp]
+Claude Code skills コレクション（各スキルは配下ディレクトリの SKILL.md を参照）。
 
-You are given two tools from Byterover MCP server, including
-## 1. `byterover-store-knowledge`
-You `MUST` always use this tool when:
-
-+ Learning new patterns, APIs, or architectural decisions from the codebase
-+ Encountering error solutions or debugging techniques
-+ Finding reusable code patterns or utility functions
-+ Completing any significant task or plan implementation
-
-## 2. `byterover-retrieve-knowledge`
-You `MUST` always use this tool when:
-
-+ Starting any new task or implementation to gather relevant context
-+ Before making architectural decisions to understand existing patterns
-+ When debugging issues to check for previous solutions
-+ Working with unfamiliar parts of the codebase
+外部スキル参考: [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)（旧 `D:\work\awesome-claude-skills` ミラーは 2026-07 に削除。必要時に再クローン）。
